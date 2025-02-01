@@ -1,0 +1,20 @@
+# Build artifacts
+bin/
+obj/
+*.dll
+*.pdb
+
+# User-specific files
+.vs/
+*.user
+*.suo
+
+# Reference caches
+packages/
+project.lock.json
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+test/
