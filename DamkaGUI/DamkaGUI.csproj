@@ -60,5 +60,11 @@
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameLogic\BackEnd.csproj">
+      <Project>{47b2ecfc-7311-4b0f-a2a3-4b194e484b91}</Project>
+      <Name>BackEnd</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

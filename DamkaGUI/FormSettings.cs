@@ -15,6 +15,7 @@ namespace DamkaGUI
             public int boardSize;
             public string firstPlayerName;
             public string secondPlayerName;
+            public bool isSecondPlayerPC;
         }
 
         private readonly int r_VeticalMergin = 5;
@@ -44,7 +45,8 @@ namespace DamkaGUI
                                     { 
                                         boardSize = this.getBoardSize(),
                                         firstPlayerName = this.Player1Name.Text, 
-                                        secondPlayerName = this.Player2Name.Text
+                                        secondPlayerName = this.Player2Name.Text,
+                                        isSecondPlayerPC = this.Player2Name.Text == this.r_Player2DefaultName 
                                     };
 
             return settings;
