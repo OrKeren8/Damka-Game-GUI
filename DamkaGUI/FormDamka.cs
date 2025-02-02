@@ -16,14 +16,14 @@ namespace DamkaGUI
 
         private FormSettings.Settings Settings { get; set; }
         private GameManager DamkaManager { get; set; }
-        private Button[,] BoardButtons { get; set; }
+        private DamkaBoardButton[,] BoardButtons { get; set; }
 
-        private Button ClickedButton { get; set; } = null;
+        private DamkaBoardButton ClickedButton { get; set; } = null;
 
         public void AddSettings(FormSettings.Settings i_Settings)
         {
             this.Settings = i_Settings;
-            this.BoardButtons = new Button[i_Settings.boardSize, i_Settings.boardSize];
+            this.BoardButtons = new DamkaBoardButton[i_Settings.boardSize, i_Settings.boardSize];
             this.initDamkaManager();
             this.initBoardComponents(this.DamkaManager.GameBoard);
         }
@@ -55,16 +55,44 @@ namespace DamkaGUI
             }
         }
 
+        private void refreshBoard()
+        {
+            for (int row = 0; row < this.DamkaManager.GameBoard.Size; row++)
+            {
+                for (int col = 0; col < this.DamkaManager.GameBoard.Size; col++)
+                {
+                    this.BoardButtons[row, col].Text = this.DamkaManager.GameBoard.GetRowSymbols(row)[col].ToString();
+                }
+            }
+        }
+
         private void boardButton_Click(object i_Sender, EventArgs i_Args)
         {
-            if(this.ClickedButton != null)
+            if(this.ClickedButton == null)
             {
-                this.ClickedButton = (i_Sender as Button);
+                (i_Sender as DamkaBoardButton).BackColor = Color.AntiqueWhite;
+                this.ClickedButton = (i_Sender as DamkaBoardButton);
             }
             else
             {
-                //this.DamkaManager.MovePiece()
+                if(this.ClickedButton == (i_Sender as DamkaBoardButton))
+                {
+                    this.ClickedButton = null;
+                    (i_Sender as DamkaBoardButton).BackColor = Color.White;
+                }
+                else
+                {
+                    bool succeed = this.DamkaManager.MovePiece(new Move(this.ClickedButton.Pos, (i_Sender as DamkaBoardButton).Pos));
+                    if (succeed)
+                    {
+                        this.refreshBoard();
+                        this.ClickedButton.BackColor = Color.White;
+                        this.ClickedButton = null;
+                    }
+                }
             }
         }
+
+        
     }
 }
