@@ -22,18 +22,14 @@ namespace DamkaGUI
         }
         private void initButton(bool i_State, char i_Symbol, Position i_Pos)
         {
-            Button boardButton = new Button();
-            boardButton.Height = boardButton.Width = this.r_CubeSize;
-            boardButton.Text = i_Symbol.ToString();
+            this.Height = this.Width = this.r_CubeSize;
+            this.Text = i_Symbol.ToString();
             int xPos = this.r_CubeSize * (i_Pos.Col + 1);
             int yPos = this.r_CubeSize * (i_Pos.Row + 1);
 
-            boardButton.Location = new Point(xPos, yPos);
-            boardButton.Enabled = i_State;
-            boardButton.BackColor = i_State ? Color.White : Color.DimGray;
-            boardButton.Click += new EventHandler(this.boardButton_Click);
-            this.BoardButtons[i_Pos.Row, i_Pos.Col] = boardButton;
-            this.Controls.Add(boardButton);
+            this.Location = new Point(xPos, yPos);
+            this.Enabled = i_State;
+            this.BackColor = i_State ? Color.White : Color.DimGray;
         }
     }
 }
