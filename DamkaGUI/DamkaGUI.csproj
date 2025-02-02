@@ -39,6 +39,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DamkaBoardButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FormDamka.cs">
       <SubType>Form</SubType>
     </Compile>

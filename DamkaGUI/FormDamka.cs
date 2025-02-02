@@ -13,11 +13,12 @@ namespace DamkaGUI
 {
     internal class FormDamka : Form
     {
-        private readonly int r_CubeSize = 50;
 
         private FormSettings.Settings Settings { get; set; }
         private GameManager DamkaManager { get; set; }
         private Button[,] BoardButtons { get; set; }
+
+        private Button ClickedButton { get; set; } = null;
 
         public void AddSettings(FormSettings.Settings i_Settings)
         {
@@ -46,30 +47,24 @@ namespace DamkaGUI
             {
                 for (int col = 0; col < i_Board.Size; col++)
                 {
-                    this.createBoardButton(((row + col) % 2 != 0), i_Board.GetRowSymbols(row)[col], new Position(row, col));
+                    DamkaBoardButton boardButton = new DamkaBoardButton(((row + col) % 2 != 0), i_Board.GetRowSymbols(row)[col], new Position(row, col));
+                    boardButton.Click += new EventHandler(this.boardButton_Click);
+                    this.BoardButtons[row, col] = boardButton;
+                    this.Controls.Add(boardButton);
                 }
             }
         }
 
-        private void createBoardButton(bool i_State, char i_Symbol, Position i_Pos)
-        {
-            Button boardButton = new Button();
-            boardButton.Height = boardButton.Width = this.r_CubeSize;
-            boardButton.Text = i_Symbol.ToString();
-            int xPos = this.r_CubeSize * (i_Pos.Col+1);
-            int yPos = this.r_CubeSize * (i_Pos.Row+1);
-            
-            boardButton.Location = new Point(xPos, yPos);
-            boardButton.Enabled = i_State;
-            boardButton.BackColor = i_State? Color.White : Color.DimGray;
-            boardButton.Click += new EventHandler(this.boardButton_Click);
-            this.BoardButtons[i_Pos.Row, i_Pos.Col] = boardButton;
-            this.Controls.Add(boardButton);
-        }
-
         private void boardButton_Click(object i_Sender, EventArgs i_Args)
         {
-
+            if(this.ClickedButton != null)
+            {
+                this.ClickedButton = (i_Sender as Button);
+            }
+            else
+            {
+                //this.DamkaManager.MovePiece()
+            }
         }
     }
 }
