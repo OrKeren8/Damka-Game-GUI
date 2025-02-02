@@ -10,16 +10,5 @@ namespace DamkaGUI
 {
     internal class FormDamka : Form
     {
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // FormDamka
-            // 
-            this.ClientSize = new System.Drawing.Size(827, 747);
-            this.Name = "FormDamka";
-            this.ResumeLayout(false);
-
-        }
     }
 }

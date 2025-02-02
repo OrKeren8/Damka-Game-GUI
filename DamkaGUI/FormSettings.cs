@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
 
 namespace DamkaGUI
 {
     internal class FormSettings : Form
     {
+        public struct Settings
+        {
+            public int boardSize;
+            public string firstPlayerName;
+            public string secondPlayerName;
+        }
+
         private readonly int r_VeticalMergin = 5;
         private int CurrentVerticalMargin { get; set; } = 20;
         private readonly int r_HorizontalMargin = 25;
@@ -28,6 +36,18 @@ namespace DamkaGUI
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "GameSettings";
+        }
+
+        public Settings GetSettings()
+        {
+            Settings settings = new Settings
+                                    { 
+                                        boardSize = this.getBoardSize(),
+                                        firstPlayerName = this.Player1Name.Text, 
+                                        secondPlayerName = this.Player2Name.Text
+                                    };
+
+            return settings;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -73,15 +93,15 @@ namespace DamkaGUI
             }
         }
 
-        private bool isRadioButtonClicked()
+        private int getBoardSize()
         {
-            bool res = false;
+            int res = -1;
 
             foreach(RadioButton radioButton in this.RadioButtonsBoardSize.Values)
             {
                 if(radioButton.Checked)
                 {
-                    res = true;
+                    res = int.Parse(radioButton.Text.Substring(0, 2));
                     break;
                 }    
             }
@@ -92,7 +112,7 @@ namespace DamkaGUI
         private void buttonFinish_Click(object i_Sender, EventArgs i_Args)
         {
 
-            if(this.isRadioButtonClicked() && this.Player1Name.Text != String.Empty
+            if((this.getBoardSize() != -1) && this.Player1Name.Text != String.Empty
                                            && this.Player2Name.Text != String.Empty)
             {
                 this.Close();

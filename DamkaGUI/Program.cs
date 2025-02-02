@@ -4,9 +4,12 @@
     {
         public static void Main()
         {
-            FormSettings form = new FormSettings();
+            FormSettings m_SettingsForm = new FormSettings();
+            FormDamka m_DamkaForm = new FormDamka();
 
-            form.ShowDialog();
+            m_SettingsForm.ShowDialog();
+            m_DamkaForm.ShowDialog(m_SettingsForm);
+
         }
     }
 }
