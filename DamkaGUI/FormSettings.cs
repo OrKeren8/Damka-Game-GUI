@@ -53,6 +53,7 @@ namespace DamkaGUI
             int xPos = this.Player2Name.Left + this.Player2Name.Size.Width - this.ButtonFinish.Size.Width;
             int yPos = this.CheckBoxPlayer2.Top + this.CheckBoxPlayer2.Size.Height + this.r_VeticalMergin;
             this.ButtonFinish.Location = new Point(xPos, yPos);
+            this.ButtonFinish.Click += new EventHandler(this.buttonFinish_Click);
 
             this.Controls.AddRange(new Control[] {ButtonFinish});
 
@@ -69,6 +70,32 @@ namespace DamkaGUI
             {
                 this.Player2Name.Enabled = true;
                 this.Player2Name.Text = string.Empty;
+            }
+        }
+
+        private bool isRadioButtonClicked()
+        {
+            bool res = false;
+
+            foreach(RadioButton radioButton in this.RadioButtonsBoardSize.Values)
+            {
+                if(radioButton.Checked)
+                {
+                    res = true;
+                    break;
+                }    
+            }
+
+            return res;
+        }
+
+        private void buttonFinish_Click(object i_Sender, EventArgs i_Args)
+        {
+
+            if(this.isRadioButtonClicked() && this.Player1Name.Text != String.Empty
+                                           && this.Player2Name.Text != String.Empty)
+            {
+                this.Close();
             }
         }
 
