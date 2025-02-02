@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace DamkaGUI
@@ -103,7 +104,7 @@ namespace DamkaGUI
             {
                 if(radioButton.Checked)
                 {
-                    res = int.Parse(radioButton.Text.Substring(0, 2));
+                    res = int.Parse(radioButton.Text.Split('X')[0]);
                     break;
                 }    
             }
