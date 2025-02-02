@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing;
+
+namespace DamkaGUI
+{
+    internal class FormDamka : Form
+    {
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // FormDamka
+            // 
+            this.ClientSize = new System.Drawing.Size(827, 747);
+            this.Name = "FormDamka";
+            this.ResumeLayout(false);
+
+        }
+    }
+}
