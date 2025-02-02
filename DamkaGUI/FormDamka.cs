@@ -10,5 +10,10 @@ namespace DamkaGUI
 {
     internal class FormDamka : Form
     {
+        private FormSettings.Settings Settings { get; set; }
+        public void AddSettings(FormSettings.Settings i_Settings)
+        {
+            this.Settings = i_Settings;
+        }
     }
 }

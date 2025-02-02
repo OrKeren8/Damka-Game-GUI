@@ -8,7 +8,8 @@
             FormDamka m_DamkaForm = new FormDamka();
 
             m_SettingsForm.ShowDialog();
-            m_DamkaForm.ShowDialog(m_SettingsForm);
+            m_DamkaForm.AddSettings(m_SettingsForm.GetSettings());
+            m_DamkaForm.ShowDialog();
 
         }
     }
