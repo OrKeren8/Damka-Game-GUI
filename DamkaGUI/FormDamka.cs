@@ -69,6 +69,7 @@ namespace DamkaGUI
             initSingleScoreLabel(this.Player1ScoreLabel, this.Settings.firstPlayerName, new Point(firstXOffset, 25));
             int secondXOffset = this.BoardButtons[0, this.Settings.boardSize / 2 + 1].Left;
             initSingleScoreLabel(this.Player2ScoreLabel, this.Settings.secondPlayerName, new Point(secondXOffset, 25));
+            this.Player2ScoreLabel.Click += new EventHandler(this.player2ScoreLabel_Click);
         }
 
         private void initSingleScoreLabel(ScoreLabel i_ScoreLabel, string i_Name, Point i_Location)
@@ -93,27 +94,40 @@ namespace DamkaGUI
 
         private void boardButton_Click(object i_Sender, EventArgs i_Args)
         {
-            if(this.ClickedButton == null)
+            if(!this.DamkaManager.CurrPlayer.r_IsPc)
             {
-                (i_Sender as DamkaBoardButton).BackColor = Color.AntiqueWhite;
-                this.ClickedButton = (i_Sender as DamkaBoardButton);
-            }
-            else
-            {
-                if(this.ClickedButton == (i_Sender as DamkaBoardButton))
+                if (this.ClickedButton == null)
                 {
-                    this.ClickedButton = null;
-                    (i_Sender as DamkaBoardButton).BackColor = Color.White;
+                    //when this is the first click this turn
+                    (i_Sender as DamkaBoardButton).BackColor = Color.LightSkyBlue;
+                    this.ClickedButton = (i_Sender as DamkaBoardButton);
                 }
                 else
                 {
-                    bool succeed = this.DamkaManager.MovePiece(new Move(this.ClickedButton.Pos, (i_Sender as DamkaBoardButton).Pos));
-                    if (succeed)
+                    if(this.ClickedButton == (i_Sender as DamkaBoardButton))
                     {
-                        this.refreshBoard();
-                        this.ClickedButton.BackColor = Color.White;
+                        //when the second click was on the same button 
                         this.ClickedButton = null;
-                        this.showCurrentPlayerTurn();
+                        (i_Sender as DamkaBoardButton).BackColor = Color.White;
+                    }
+                    else
+                    {
+                        //when the second click was on another button
+                        bool succeed = this.DamkaManager.MovePiece(
+                            new Move(this.ClickedButton.Pos, (i_Sender as DamkaBoardButton).Pos));
+                        if(succeed)
+                        {
+                            //when the second click was a valid move
+                            this.refreshBoard();
+                            this.ClickedButton.BackColor = Color.White;
+                            this.ClickedButton = null;
+                            this.showCurrentPlayerTurn();
+                        }
+                        else
+                        {
+                            //when the second click was not valid
+                            MessageBox.Show("Not Valid Move!");
+                        }
                     }
                 }
             }
@@ -130,6 +144,20 @@ namespace DamkaGUI
             {
                 this.Player1ScoreLabel.BackColor = Color.Transparent;
                 this.Player2ScoreLabel.BackColor = Color.LightSkyBlue;
+            }
+        }
+
+        private void player2ScoreLabel_Click(object i_Sender, EventArgs i_Args)
+        {
+            if(this.DamkaManager.CurrPlayer.r_IsPc)
+            {
+                bool succeed = this.DamkaManager.MovePiece(new Move());
+                if(succeed)
+                {
+                    this.refreshBoard();
+                    this.ClickedButton = null;
+                    this.showCurrentPlayerTurn();
+                }
             }
         }
     }
