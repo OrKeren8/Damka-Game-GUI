@@ -17,13 +17,11 @@ namespace DamkaGUI
         private FormSettings.Settings Settings { get; set; }
         private GameManager DamkaManager { get; set; }
         private DamkaBoardButton[,] BoardButtons { get; set; }
-
         private DamkaBoardButton ClickedButton { get; set; } = null;
 
+        private ScoreLabel Player1ScoreLabel { get; set; } = new ScoreLabel();
+        private ScoreLabel Player2ScoreLabel { get; set; } = new ScoreLabel();
 
-        public FormDamka()
-        {
-        }
 
         public void AddSettings(FormSettings.Settings i_Settings)
         {
@@ -31,6 +29,7 @@ namespace DamkaGUI
             this.BoardButtons = new DamkaBoardButton[i_Settings.boardSize, i_Settings.boardSize];
             this.initDamkaManager();
             this.initBoardComponents(this.DamkaManager.GameBoard);
+            this.initScoreLables();
             DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.boardSize-1, this.Settings.boardSize-1];
             this.ClientSize = new Size(
                 bottomRightButton.Right + bottomRightButton.Width,
@@ -42,12 +41,6 @@ namespace DamkaGUI
             Player player1 = new Player(this.Settings.firstPlayerName, i_IsPc: false, ePlayerType.White);
             Player player2 = new Player(this.Settings.secondPlayerName, this.Settings.isSecondPlayerPC, ePlayerType.Black);
             this.DamkaManager = new GameManager(player1, player2, this.Settings.boardSize);
-        }
-
-        private void gameMaimLoop()
-        {
-            bool isFinished = false;
-
         }
 
         private void initBoardComponents(Board i_Board)
@@ -102,6 +95,20 @@ namespace DamkaGUI
             }
         }
 
-        
+        private void initScoreLables()
+        {
+            int firstXOffset = this.BoardButtons[0, 1].Left;
+            initSingleScoreLabel(this.Player1ScoreLabel, this.Settings.firstPlayerName, new Point(firstXOffset, 25));
+            int secondXOffset = this.BoardButtons[0, this.Settings.boardSize / 2 + 1].Left;
+            initSingleScoreLabel(this.Player2ScoreLabel, this.Settings.secondPlayerName, new Point(secondXOffset, 25));
+        }
+
+        private void initSingleScoreLabel(ScoreLabel i_ScoreLabel, string i_Name, Point i_Location)
+        {
+            string name = $"{i_Name}: {i_ScoreLabel.Score}";
+            i_ScoreLabel.Text = name;
+            i_ScoreLabel.Location = i_Location;
+            this.Controls.Add(i_ScoreLabel);
+        }
     }
 }
