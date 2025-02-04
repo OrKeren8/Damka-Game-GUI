@@ -20,12 +20,21 @@ namespace DamkaGUI
 
         private DamkaBoardButton ClickedButton { get; set; } = null;
 
+
+        public FormDamka()
+        {
+        }
+
         public void AddSettings(FormSettings.Settings i_Settings)
         {
             this.Settings = i_Settings;
             this.BoardButtons = new DamkaBoardButton[i_Settings.boardSize, i_Settings.boardSize];
             this.initDamkaManager();
             this.initBoardComponents(this.DamkaManager.GameBoard);
+            DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.boardSize-1, this.Settings.boardSize-1];
+            this.ClientSize = new Size(
+                bottomRightButton.Right + bottomRightButton.Width,
+                bottomRightButton.Bottom + bottomRightButton.Height);
         }
 
         private void initDamkaManager()
