@@ -44,7 +44,7 @@ namespace DamkaGUI
 
         private void initDamkaManager()
         {
-            Player player1 = new Player(this.Settings.firstPlayerName, i_IsPc: false, ePlayerType.White);
+            Player player1 = new Player(this.Settings.firstPlayerName, i_IsPc: true, ePlayerType.White);
             Player player2 = new Player(this.Settings.secondPlayerName, this.Settings.isSecondPlayerPC, ePlayerType.Black);
             this.DamkaManager = new GameManager(player1, player2, this.Settings.boardSize);
         }
@@ -122,6 +122,8 @@ namespace DamkaGUI
                             this.ClickedButton.BackColor = Color.White;
                             this.ClickedButton = null;
                             this.showCurrentPlayerTurn();
+                            this.afterTurnActions();
+
                         }
                         else
                         {
@@ -157,8 +159,23 @@ namespace DamkaGUI
                     this.refreshBoard();
                     this.ClickedButton = null;
                     this.showCurrentPlayerTurn();
+                    afterTurnActions();
                 }
             }
         }
+
+        private void afterTurnActions()
+        {
+            if(this.DamkaManager.CheckIfSomeoneLoseAllPieces())
+            {
+                MessageBox.Show(
+                    $"{this.DamkaManager.WhichPlayerWonAfterGameOverOneLose().Name} Won! \n Another Round?");
+            }
+            else if(this.DamkaManager.CheckIfTheresNoOptionToMove())
+            {
+                MessageBox.Show($"Tie! \n Another Round?");
+            }
+        }
+
     }
 }
