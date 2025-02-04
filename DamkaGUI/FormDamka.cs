@@ -26,14 +26,20 @@ namespace DamkaGUI
         public void AddSettings(FormSettings.Settings i_Settings)
         {
             this.Settings = i_Settings;
-            this.BoardButtons = new DamkaBoardButton[i_Settings.boardSize, i_Settings.boardSize];
+            this.init();
+        }
+
+        private void init()
+        {
+            this.BoardButtons = new DamkaBoardButton[this.Settings.boardSize, this.Settings.boardSize];
             this.initDamkaManager();
             this.initBoardComponents(this.DamkaManager.GameBoard);
             this.initScoreLables();
-            DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.boardSize-1, this.Settings.boardSize-1];
+            DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.boardSize - 1, this.Settings.boardSize - 1];
             this.ClientSize = new Size(
                 bottomRightButton.Right + bottomRightButton.Width,
                 bottomRightButton.Bottom + bottomRightButton.Height);
+            this.showCurrentPlayerTurn();
         }
 
         private void initDamkaManager()
@@ -55,6 +61,23 @@ namespace DamkaGUI
                     this.Controls.Add(boardButton);
                 }
             }
+        }
+
+        private void initScoreLables()
+        {
+            int firstXOffset = this.BoardButtons[0, 1].Left;
+            initSingleScoreLabel(this.Player1ScoreLabel, this.Settings.firstPlayerName, new Point(firstXOffset, 25));
+            int secondXOffset = this.BoardButtons[0, this.Settings.boardSize / 2 + 1].Left;
+            initSingleScoreLabel(this.Player2ScoreLabel, this.Settings.secondPlayerName, new Point(secondXOffset, 25));
+        }
+
+        private void initSingleScoreLabel(ScoreLabel i_ScoreLabel, string i_Name, Point i_Location)
+        {
+            string name = $"{i_Name}: {i_ScoreLabel.Score}";
+            i_ScoreLabel.Text = name;
+            i_ScoreLabel.Location = i_Location;
+            i_ScoreLabel.AutoSize = true;
+            this.Controls.Add(i_ScoreLabel);
         }
 
         private void refreshBoard()
@@ -90,25 +113,24 @@ namespace DamkaGUI
                         this.refreshBoard();
                         this.ClickedButton.BackColor = Color.White;
                         this.ClickedButton = null;
+                        this.showCurrentPlayerTurn();
                     }
                 }
             }
         }
 
-        private void initScoreLables()
+        private void showCurrentPlayerTurn()
         {
-            int firstXOffset = this.BoardButtons[0, 1].Left;
-            initSingleScoreLabel(this.Player1ScoreLabel, this.Settings.firstPlayerName, new Point(firstXOffset, 25));
-            int secondXOffset = this.BoardButtons[0, this.Settings.boardSize / 2 + 1].Left;
-            initSingleScoreLabel(this.Player2ScoreLabel, this.Settings.secondPlayerName, new Point(secondXOffset, 25));
-        }
-
-        private void initSingleScoreLabel(ScoreLabel i_ScoreLabel, string i_Name, Point i_Location)
-        {
-            string name = $"{i_Name}: {i_ScoreLabel.Score}";
-            i_ScoreLabel.Text = name;
-            i_ScoreLabel.Location = i_Location;
-            this.Controls.Add(i_ScoreLabel);
+            if(this.DamkaManager.CurrPlayer.PlayerType == ePlayerType.White)
+            {
+                this.Player1ScoreLabel.BackColor = Color.LightSkyBlue;
+                this.Player2ScoreLabel.BackColor = Color.Transparent;
+            }
+            else
+            {
+                this.Player1ScoreLabel.BackColor = Color.Transparent;
+                this.Player2ScoreLabel.BackColor = Color.LightSkyBlue;
+            }
         }
     }
 }
