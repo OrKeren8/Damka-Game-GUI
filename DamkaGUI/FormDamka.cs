@@ -79,8 +79,8 @@ namespace DamkaGUI
 
         private void initSingleScoreLabel(ScoreLabel i_ScoreLabel, string i_Name, Point i_Location)
         {
-            string name = $"{i_Name}: {i_ScoreLabel.Score}";
-            i_ScoreLabel.Text = name;
+            i_ScoreLabel.Name = i_Name;
+            i_ScoreLabel.Score = 0;
             i_ScoreLabel.Location = i_Location;
             i_ScoreLabel.AutoSize = true;
             this.Controls.Add(i_ScoreLabel);
@@ -200,6 +200,8 @@ namespace DamkaGUI
         {
             this.DamkaManager.StartNewRound(this.Settings.boardSize);
             this.refreshBoard();
+            this.Player1ScoreLabel.Score = this.DamkaManager.Player1.Points;
+            this.Player2ScoreLabel.Score = this.DamkaManager.Player2.Points;
         }
 
         private void exitGame()

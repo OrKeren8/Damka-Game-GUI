@@ -9,7 +9,17 @@ namespace DamkaGUI
 {
     internal class ScoreLabel : Label
     {
-        public int Score { get; private set; } = 0;
 
+        private int m_Score = 0;
+        public string Name = "";
+        public int Score
+        {
+            get { return m_Score; }
+            set
+            {
+                m_Score = value;
+                this.Text = $"{this.Name}: {this.Score}";
+            }
+        }
     }
 }
