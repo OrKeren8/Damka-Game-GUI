@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Runtime.CompilerServices;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace DamkaGUI
@@ -13,13 +10,14 @@ namespace DamkaGUI
     {
         public struct Settings
         {
-            public int boardSize;
-            public string firstPlayerName;
-            public string secondPlayerName;
-            public bool isSecondPlayerPC;
+            public int m_BoardSize;
+            public string m_FirstPlayerName;
+            public string m_SecondPlayerName;
+            public bool m_IsSecondPlayerPC;
         }
 
-        private readonly int r_VeticalMergin = 5;
+        public bool m_IsInistializedProperly { get; private set; } = false;
+        private readonly int r_VerticalMargin = 5;
         private int CurrentVerticalMargin { get; set; } = 20;
         private readonly int r_HorizontalMargin = 25;
         private readonly string r_Player2DefaultName = "[Computer]";
@@ -44,11 +42,16 @@ namespace DamkaGUI
         {
             Settings settings = new Settings
                                     { 
-                                        boardSize = this.getBoardSize(),
-                                        firstPlayerName = this.Player1Name.Text, 
-                                        secondPlayerName = this.Player2Name.Text,
-                                        isSecondPlayerPC = this.Player2Name.Text == this.r_Player2DefaultName 
+                                        m_BoardSize = this.getBoardSize(),
+                                        m_FirstPlayerName = this.Player1Name.Text, 
+                                        m_SecondPlayerName = this.Player2Name.Text,
+                                        m_IsSecondPlayerPC = this.Player2Name.Text == this.r_Player2DefaultName 
                                     };
+
+            if(this.getBoardSize() != -1)
+            {
+                this.m_IsInistializedProperly = true;
+            }
 
             return settings;
         }
@@ -62,7 +65,7 @@ namespace DamkaGUI
         private int getNextVerticalHeight(int i_ComponnentWidth)
         {
             int res = this.CurrentVerticalMargin;
-            this.CurrentVerticalMargin += i_ComponnentWidth + this.r_VeticalMergin;
+            this.CurrentVerticalMargin += i_ComponnentWidth + this.r_VerticalMargin;
 
             return res;
         }
@@ -74,7 +77,7 @@ namespace DamkaGUI
             
             this.ButtonFinish.Text = "Done";
             int xPos = this.Player2Name.Left + this.Player2Name.Size.Width - this.ButtonFinish.Size.Width;
-            int yPos = this.CheckBoxPlayer2.Top + this.CheckBoxPlayer2.Size.Height + this.r_VeticalMergin;
+            int yPos = this.CheckBoxPlayer2.Top + this.CheckBoxPlayer2.Size.Height + this.r_VerticalMargin;
             this.ButtonFinish.Location = new Point(xPos, yPos);
             this.ButtonFinish.Click += new EventHandler(this.buttonFinish_Click);
 

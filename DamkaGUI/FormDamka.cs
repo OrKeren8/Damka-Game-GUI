@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using BackEnd;
-using System.ComponentModel;
-using static System.Windows.Forms.AxHost;
 
 namespace DamkaGUI
 {
@@ -31,7 +25,7 @@ namespace DamkaGUI
 
         private void init()
         {
-            this.BoardButtons = new DamkaBoardButton[this.Settings.boardSize, this.Settings.boardSize];
+            this.BoardButtons = new DamkaBoardButton[this.Settings.m_BoardSize, this.Settings.m_BoardSize];
             this.initDamkaManager();
             this.initBoardComponents(this.DamkaManager.GameBoard);
             this.initScoreLables();
@@ -42,7 +36,7 @@ namespace DamkaGUI
 
         private void setFormSize()
         {
-            DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.boardSize - 1, this.Settings.boardSize - 1];
+            DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.m_BoardSize - 1, this.Settings.m_BoardSize - 1];
             this.ClientSize = new Size(
                 bottomRightButton.Right + bottomRightButton.Width,
                 bottomRightButton.Bottom + bottomRightButton.Height);
@@ -50,9 +44,9 @@ namespace DamkaGUI
 
         private void initDamkaManager()
         {
-            Player player1 = new Player(this.Settings.firstPlayerName, i_IsPc: false, ePlayerType.White);
-            Player player2 = new Player(this.Settings.secondPlayerName, this.Settings.isSecondPlayerPC, ePlayerType.Black);
-            this.DamkaManager = new GameManager(player1, player2, this.Settings.boardSize);
+            Player player1 = new Player(this.Settings.m_FirstPlayerName, i_IsPc: false, ePlayerType.White);
+            Player player2 = new Player(this.Settings.m_SecondPlayerName, this.Settings.m_IsSecondPlayerPC, ePlayerType.Black);
+            this.DamkaManager = new GameManager(player1, player2, this.Settings.m_BoardSize);
         }
 
         private void initBoardComponents(Board i_Board)
@@ -72,9 +66,9 @@ namespace DamkaGUI
         private void initScoreLables()
         {
             int firstXOffset = this.BoardButtons[0, 1].Left;
-            initSingleScoreLabel(this.Player1ScoreLabel, this.Settings.firstPlayerName, new Point(firstXOffset, 25));
-            int secondXOffset = this.BoardButtons[0, this.Settings.boardSize / 2 + 1].Left;
-            initSingleScoreLabel(this.Player2ScoreLabel, this.Settings.secondPlayerName, new Point(secondXOffset, 25));
+            initSingleScoreLabel(this.Player1ScoreLabel, this.Settings.m_FirstPlayerName, new Point(firstXOffset, 25));
+            int secondXOffset = this.BoardButtons[0, this.Settings.m_BoardSize / 2 + 1].Left;
+            initSingleScoreLabel(this.Player2ScoreLabel, this.Settings.m_SecondPlayerName, new Point(secondXOffset, 25));
             this.Player2ScoreLabel.Click += new EventHandler(this.player2ScoreLabel_Click);
         }
 
@@ -199,7 +193,7 @@ namespace DamkaGUI
         private void anotherRound()
         {
             this.DamkaManager.EndRound();
-            this.DamkaManager.StartNewRound(this.Settings.boardSize);
+            this.DamkaManager.StartNewRound(this.Settings.m_BoardSize);
             this.refreshBoard();
             this.Player1ScoreLabel.Score = this.DamkaManager.Player1.Points;
             this.Player2ScoreLabel.Score = this.DamkaManager.Player2.Points;

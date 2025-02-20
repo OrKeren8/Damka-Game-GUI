@@ -1,16 +1,21 @@
-﻿namespace DamkaGUI
+﻿using System.Runtime.CompilerServices;
+
+namespace DamkaGUI
 {
     internal class Program
     {
         public static void Main()
         {
-            FormSettings m_SettingsForm = new FormSettings();
-            FormDamka m_DamkaForm = new FormDamka();
+            FormSettings settingsForm = new FormSettings();
+            FormDamka damkaForm = new FormDamka();
 
-            m_SettingsForm.ShowDialog();
-            m_DamkaForm.AddSettings(m_SettingsForm.GetSettings());
-            m_DamkaForm.ShowDialog();
-
+            settingsForm.ShowDialog();
+            FormSettings.Settings gameSettings = settingsForm.GetSettings();
+            if (settingsForm.m_IsInistializedProperly)
+            {
+                damkaForm.AddSettings(gameSettings);
+                damkaForm.ShowDialog();
+            }
         }
     }
 }
