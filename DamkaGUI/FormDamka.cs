@@ -50,7 +50,7 @@ namespace DamkaGUI
 
         private void initDamkaManager()
         {
-            Player player1 = new Player(this.Settings.firstPlayerName, i_IsPc: true, ePlayerType.White);
+            Player player1 = new Player(this.Settings.firstPlayerName, i_IsPc: false, ePlayerType.White);
             Player player2 = new Player(this.Settings.secondPlayerName, this.Settings.isSecondPlayerPC, ePlayerType.Black);
             this.DamkaManager = new GameManager(player1, player2, this.Settings.boardSize);
         }
