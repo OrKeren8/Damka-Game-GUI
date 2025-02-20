@@ -36,6 +36,7 @@ namespace DamkaGUI
             this.initBoardComponents(this.DamkaManager.GameBoard);
             this.initScoreLables();
             this.setFormSize();
+            this.FormClosing += this.FormClosing_Click;
             this.showCurrentPlayerTurn();
         }
 
@@ -184,7 +185,6 @@ namespace DamkaGUI
 
             if(result != DialogResult.Ignore)
             {
-                this.DamkaManager.EndRound();
                 if (result == DialogResult.Yes)
                 {
                     this.anotherRound();
@@ -198,6 +198,7 @@ namespace DamkaGUI
 
         private void anotherRound()
         {
+            this.DamkaManager.EndRound();
             this.DamkaManager.StartNewRound(this.Settings.boardSize);
             this.refreshBoard();
             this.Player1ScoreLabel.Score = this.DamkaManager.Player1.Points;
@@ -208,5 +209,25 @@ namespace DamkaGUI
         {
             this.Close();
         }
+
+        private void FormClosing_Click(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.Show("This round has finished. Do you wish to quit it and start a new round?", "Exit", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+            switch(result)
+            {
+                case DialogResult.Yes:
+                    e.Cancel = true;
+                    this.anotherRound();
+                    break;
+                case DialogResult.No:
+                    break;
+                default:
+                    e.Cancel = true;
+                    break;
+            }
+        }
+
+
     }
 }
