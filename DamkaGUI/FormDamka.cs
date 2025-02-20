@@ -35,11 +35,16 @@ namespace DamkaGUI
             this.initDamkaManager();
             this.initBoardComponents(this.DamkaManager.GameBoard);
             this.initScoreLables();
+            this.setFormSize();
+            this.showCurrentPlayerTurn();
+        }
+
+        private void setFormSize()
+        {
             DamkaBoardButton bottomRightButton = this.BoardButtons[this.Settings.boardSize - 1, this.Settings.boardSize - 1];
             this.ClientSize = new Size(
                 bottomRightButton.Right + bottomRightButton.Width,
                 bottomRightButton.Bottom + bottomRightButton.Height);
-            this.showCurrentPlayerTurn();
         }
 
         private void initDamkaManager()
@@ -151,10 +156,10 @@ namespace DamkaGUI
 
         private void player2ScoreLabel_Click(object i_Sender, EventArgs i_Args)
         {
-            if(this.DamkaManager.CurrPlayer.r_IsPc)
+            if (this.DamkaManager.CurrPlayer.r_IsPc)
             {
                 bool succeed = this.DamkaManager.MovePiece(new Move());
-                if(succeed)
+                if (succeed)
                 {
                     this.refreshBoard();
                     this.ClickedButton = null;
@@ -166,16 +171,40 @@ namespace DamkaGUI
 
         private void afterTurnActions()
         {
-            if(this.DamkaManager.CheckIfSomeoneLoseAllPieces())
+            DialogResult result = DialogResult.Ignore;
+            
+            if (this.DamkaManager.CheckIfSomeoneLoseAllPieces())
             {
-                MessageBox.Show(
-                    $"{this.DamkaManager.WhichPlayerWonAfterGameOverOneLose().Name} Won! \n Another Round?");
+                result = MessageBox.Show($"{this.DamkaManager.WhichPlayerWonAfterGameOverOneLose().Name} Won! \n Another Round?", "Confirmation", MessageBoxButtons.YesNo);
             }
             else if(this.DamkaManager.CheckIfTheresNoOptionToMove())
             {
-                MessageBox.Show($"Tie! \n Another Round?");
+                result = MessageBox.Show($"Tie! \n Another Round?", "Confirmation", MessageBoxButtons.YesNo);
+            }
+
+            if(result != DialogResult.Ignore)
+            {
+                this.DamkaManager.EndRound();
+                if (result == DialogResult.Yes)
+                {
+                    this.anotherRound();
+                }
+                else if (result == DialogResult.No)
+                {
+                    this.exitGame();
+                }
             }
         }
 
+        private void anotherRound()
+        {
+            this.DamkaManager.StartNewRound(this.Settings.boardSize);
+            this.refreshBoard();
+        }
+
+        private void exitGame()
+        {
+            this.Close();
+        }
     }
 }
